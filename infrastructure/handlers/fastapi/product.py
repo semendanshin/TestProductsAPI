@@ -41,9 +41,9 @@ class FastApiProductHandler:
         self.register()
 
     def register(self):
-        self.router.get("/")(self.get_all)
+        self.router.get("")(self.get_all)
         self.router.get("/{id}")(self.get)
-        self.router.post("/")(self.create)
+        self.router.post("")(self.create)
         self.router.put("/{id}")(self.update)
         self.router.delete("/{id}")(self.delete)
 
