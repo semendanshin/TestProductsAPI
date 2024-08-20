@@ -18,11 +18,14 @@ class AbstractSQLAlchemyRepository[Entity, Model, CreateDTO, UpdateDTO](
     def __post_init__(self):
         self.entity: Type[Entity] = self.__orig_bases__[0].__args__[0] # noqa
 
-    async def create(self, obj: CreateDTO) -> None:
+    async def create(self, obj: CreateDTO) -> Model:
+        entity = self.create_dto_to_entity(obj)
         async with self.session_maker() as session:
             try:
                 async with session.begin():
-                    session.add(self.create_dto_to_entity(obj))
+                    session.add(entity)
+                    await session.flush()
+                    return self.entity_to_model(entity)
             except IntegrityError as e:
                 raise AlreadyExistsException("Unique constraint violation") from e
 
@@ -40,11 +43,13 @@ class AbstractSQLAlchemyRepository[Entity, Model, CreateDTO, UpdateDTO](
     async def update(self, obj_id: str, obj: UpdateDTO) -> None:
         async with self.session_maker() as session:
             async with session.begin():
-                entity = await session.get(self.entity, obj_id)
-                if not entity:
-                    raise NotFoundException(f"Entity with id {obj_id} not found")
+                stm = (
+                    select(self.entity).where(self.entity.id == obj_id).with_for_update()
+                )
+                entity = (await session.execute(stm)).scalars().one()
                 for key, value in obj.__dict__.items():
                     setattr(entity, key, value)
+                await session.flush()
 
     async def delete(self, obj_id: str) -> None:
         async with self.session_maker() as session:
@@ -73,4 +78,8 @@ class AbstractSQLAlchemyRepository[Entity, Model, CreateDTO, UpdateDTO](
 
     @abstractmethod
     def create_dto_to_entity(self, create_dto: CreateDTO) -> Entity:
+        pass
+
+    @abstractmethod
+    def update_dto_to_entity(self, update_dto: UpdateDTO) -> Entity:
         pass

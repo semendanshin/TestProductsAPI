@@ -42,3 +42,11 @@ class SqlAlchemyProductRepository(
             price=create_dto.price,
             description=create_dto.description,
         )
+
+    def update_dto_to_entity(self, update_dto: UpdateProductDTO) -> Product:
+        return Product(
+            sku=update_dto.sku,
+            name=update_dto.name,
+            price=update_dto.price,
+            description=update_dto.description,
+        )

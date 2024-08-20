@@ -14,7 +14,7 @@ class AlreadyExistsException(BaseRepositoryException):
 
 class CRUDRepositoryInterface[Model, CreateDTO, UpdateDTO](ABC):
     @abstractmethod
-    async def create(self, obj: CreateDTO) -> None:
+    async def create(self, obj: CreateDTO) -> Model:
         pass
 
     @abstractmethod

@@ -11,8 +11,8 @@ class AbstractCRUDUseCase[
 ](ABC):
     repository: CRUDRepositoryInterface[Model, CreateDTO, UpdateDTO]
 
-    async def create(self, obj: CreateDTO) -> None:
-        await self.repository.create(obj)
+    async def create(self, obj: CreateDTO) -> Model:
+        return await self.repository.create(obj)
 
     async def get(self, obj_id: uuid.UUID) -> Model:
         return await self.repository.get(obj_id)

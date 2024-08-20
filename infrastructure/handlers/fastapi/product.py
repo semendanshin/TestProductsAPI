@@ -25,10 +25,10 @@ class HandlerCreateProductDTO(BaseModel):
     price: float
 
 class HandlerUpdateProductDTO(BaseModel):
-    sku: Optional[str]
-    name: Optional[str]
-    description: Optional[str]
-    price: Optional[float]
+    sku: str
+    name: str
+    description: str
+    price: float
 
 class FastApiProductHandler:
     def __init__(self, product_use_case: ProductUseCase):
@@ -84,7 +84,7 @@ class FastApiProductHandler:
     async def create(
             self,
             dto: HandlerCreateProductDTO,
-    ) -> None:
+    ) -> Product:
         try:
             return await self.product_use_case.create(CreateProductDTO(**dto.model_dump()))
         except Exception as e:
