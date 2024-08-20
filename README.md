@@ -65,7 +65,7 @@ API позволяет пользователям добавлять, обнов
 4. Примените миграции:
 
     ```bash
-    docker compose exec web alembic upgrade head
+    docker compose exec app alembic upgrade head
     ```
 
 * ### Локально

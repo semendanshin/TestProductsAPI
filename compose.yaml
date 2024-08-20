@@ -1,0 +1,16 @@
+include:
+  - ./database/db-compose.yaml
+
+services:
+  app:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: ecommerce_app
+    restart: unless-stopped
+    links:
+      - db
+    ports:
+        - "8000:8000"
+    volumes:
+      - ./settings.json:/app/settings.json:ro
