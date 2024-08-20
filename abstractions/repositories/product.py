@@ -14,6 +14,7 @@ class CreateProductDTO:
     name: str
     description: str
     price: int
+    category_id: uuid.UUID
 
 
 @dataclass
@@ -22,6 +23,7 @@ class UpdateProductDTO:
     name: Optional[str]
     description: Optional[str]
     price: Optional[int]
+    category_id: Optional[uuid.UUID]
 
 
 class ProductRepositoryInterface(

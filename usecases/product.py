@@ -1,4 +1,5 @@
 from abstractions.repositories.product import UpdateProductDTO, CreateProductDTO
+from abstractions.usecases.product import ProductUseCaseInterface
 from domain import Product
 from usecases.abstract import AbstractCRUDUseCase
 
@@ -6,7 +7,8 @@ from usecases.abstract import AbstractCRUDUseCase
 class ProductUseCase(
     AbstractCRUDUseCase[
         Product, CreateProductDTO, UpdateProductDTO
-    ]
+    ],
+    ProductUseCaseInterface,
 ):
     async def get_all(self, limit: int = 100, offset: int = 0, sku: str = None, name: str = None) -> list[Product]:
         filters = {}

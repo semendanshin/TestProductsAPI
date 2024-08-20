@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import UUID, TIMESTAMP, func, String, Integer
+from sqlalchemy import UUID, TIMESTAMP, func, String, Integer, ForeignKey
 from sqlalchemy.orm import declarative_base, mapped_column, Mapped
 
 Base = declarative_base()
@@ -23,3 +23,10 @@ class Product(BaseEntity):
     name: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=False)
     price: Mapped[int] = mapped_column(Integer, nullable=False)
+    category_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey('categories.id'), nullable=False)
+
+
+class Category(BaseEntity):
+    __tablename__ = 'categories'
+
+    name: Mapped[str] = mapped_column(String, nullable=False)

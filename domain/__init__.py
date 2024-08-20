@@ -16,3 +16,9 @@ class Product(Base):
     name: str
     description: str
     price: int
+    category_id: uuid.UUID
+
+
+@dataclass
+class Category(Base):
+    name: str

@@ -19,6 +19,7 @@ class SqlAlchemyProductRepository(
             name=entity.name,
             price=entity.price,
             description=entity.description,
+            category_id=entity.category_id,
             created_at=entity.created_at,
             updated_at=entity.updated_at,
         )
@@ -30,6 +31,7 @@ class SqlAlchemyProductRepository(
             name=model.name,
             price=model.price,
             description=model.description,
+            category_id=model.category_id,
             created_at=model.created_at,
             updated_at=model.updated_at,
         )
@@ -41,6 +43,7 @@ class SqlAlchemyProductRepository(
             name=create_dto.name,
             price=create_dto.price,
             description=create_dto.description,
+            category_id=create_dto.category_id,
         )
 
     def update_dto_to_entity(self, update_dto: UpdateProductDTO) -> Product:
@@ -49,4 +52,5 @@ class SqlAlchemyProductRepository(
             name=update_dto.name,
             price=update_dto.price,
             description=update_dto.description,
+            category_id=update_dto.category_id,
         )

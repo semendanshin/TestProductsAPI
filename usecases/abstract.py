@@ -3,12 +3,16 @@ from abc import ABC
 from dataclasses import dataclass
 
 from abstractions.repositories import CRUDRepositoryInterface
+from abstractions.usecases.abstract import CRUDUseCaseInterface
 
 
 @dataclass
 class AbstractCRUDUseCase[
     Model, CreateDTO, UpdateDTO
-](ABC):
+](
+    CRUDUseCaseInterface[Model, CreateDTO, UpdateDTO],
+    ABC,
+):
     repository: CRUDRepositoryInterface[Model, CreateDTO, UpdateDTO]
 
     async def create(self, obj: CreateDTO) -> Model:

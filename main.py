@@ -5,10 +5,13 @@ import uvicorn
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
+from infrastructure.handlers.fastapi.category import FastApiCategoryHandler
 from infrastructure.handlers.fastapi.product import FastApiProductHandler
+from infrastructure.repositories.category import SqlAlchemyCategoryRepository
 from infrastructure.repositories.product import SqlAlchemyProductRepository
 from settings import Settings
 from usecases import ProductUseCase
+from usecases.category import CategoryUseCase
 
 LOGGING_CONFIG = {
     "version": 1,
@@ -68,10 +71,13 @@ async def setup() -> FastAPI:
     session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
     products_repo = SqlAlchemyProductRepository(session_maker)
+    categories_repo = SqlAlchemyCategoryRepository(session_maker)
 
     products_use_case = ProductUseCase(products_repo)
+    categories_use_case = CategoryUseCase(categories_repo)
 
     products_handler = FastApiProductHandler(products_use_case)
+    categories_handler = FastApiCategoryHandler(categories_use_case)
 
     app = FastAPI(
         title="Product API",
@@ -79,7 +85,8 @@ async def setup() -> FastAPI:
         version="0.1.0",
     )
 
-    app.include_router(products_handler.router)
+    app.include_router(products_handler.router, prefix="/products")
+    app.include_router(categories_handler.router, prefix="/categories")
 
     return app
 
