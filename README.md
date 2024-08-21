@@ -30,7 +30,8 @@ API позволяет пользователям добавлять, обнов
 +--------------------+     +--------------------+
 |                    |     |                    |
 | id: UUID           |     | id: UUID           |
-| name: str          |     | name: str          |
+| sku: str           |     | name: str          |
+| name: str          |     |                    |
 | description: str   |     |                    |
 | price: float       |     |                    |
 | category_id: UUID  |     |                    |
